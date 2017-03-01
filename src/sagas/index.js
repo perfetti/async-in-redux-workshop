@@ -9,8 +9,39 @@ import {
   CAT_VOTE_SUCCESS,
   CAT_VOTE_FAILED,
   UPVOTE,
-  DOWNVOTE
+  DOWNVOTE,
+  CHANGE_IMAGE,
+  CHANGE_IMAGE_SUCCESS,
+  CHANGE_IMAGE_FAILED
 } from 'constants';
+
+export default function* rootSata() {
+  yield [
+    takeLatest(FETCH_CAT_DATA_PENDING, fetchCatImage),
+    takeLatest(UPVOTE, upvote),
+    takeLatest(DOWNVOTE, downvote),
+    takeLatest(CHANGE_IMAGE, changeImage)
+  ];
+}
+
+function* changeImage(action) {
+  const params = { api_key: API_KEY };
+
+  try {
+    const data = yield fetch('http://thecatapi.com/api/images/get', params);
+    yield put({
+      type: CHANGE_IMAGE_SUCCESS,
+      payload: data
+    });
+  } catch (error) {
+    yield put({
+      type: CHANGE_IMAGE_FAILED,
+      error: true,
+      payload: error
+    })
+    yield* changeImage()
+  }
+}
 
 function* fetchCatImage(action) {
 
@@ -69,11 +100,3 @@ function* voteCatImage(score) {
     })
   }
 };
-
-export default function* rootSata() {
-  yield [
-    takeLatest(FETCH_CAT_DATA_PENDING, fetchCatImage),
-    takeLatest(UPVOTE, upvote),
-    takeLatest(DOWNVOTE, downvote)
-  ];
-}

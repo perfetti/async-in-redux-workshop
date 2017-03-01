@@ -9,3 +9,6 @@ export const CAT_VOTE_FAILED        = 'CAT_VOTE_FAILED';
 export const CAT_VOTE_SUCCESS       = 'CAT_VOTE_SUCCESS'
 export const UPVOTE                 = 'UPVOTE';
 export const DOWNVOTE               = 'DOWNVOTE';
+export const CHANGE_IMAGE           = 'CHANGE_IMAGE';
+export const CHANGE_IMAGE_SUCCESS   = 'CHANGE_IMAGE_SUCCESS';
+export const CHANGE_IMAGE_FAILED    = 'CHANGE_IMAGE_FAILED';

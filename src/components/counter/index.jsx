@@ -1,31 +1,45 @@
 import './index.css';
-import React        from 'react';
+import React, { Component } from 'react';
 import { connect }  from 'react-redux';
 import * as actions from 'actions/counter-actions';
 
-function Counter({catCount, incrementCatCount, decrementCatCount}) {
-  const cats = [];
-  for (let i = 0; i < catCount; i++) {
-    cats.push(<CatImage key={i}/>)
+class Counter extends Component {
+  componentDidMount() {
+    this.props.changeImage();
   }
-  return (
-    <div className='counter-container'>
-      <div className='buttons'>
-        <button className='increment' onClick={incrementCatCount}>More Cats</button>
-        <button className='decrement' onClick={decrementCatCount}>Fewer Cats</button>
+
+  render(){
+    const {url, catCount} = this.props
+    const cats = [];
+    for (let i = 0; i < catCount; i++) {
+      const key = i;
+      cats.push(catImage(url, key))
+    }
+    return (
+      <div className='counter-container'>
+        <div className='buttons'>
+          <button className='increment' onClick={this.props.incrementCatCount}>More Cats</button>
+          <button className='decrement' onClick={this.props.decrementCatCount}>Fewer Cats</button>
+          <br />
+          <br />
+          <button className='decrement' onClick={this.props.changeImage}>Change Image</button>
+        </div>
+        { cats }
       </div>
-      { cats }
-    </div>
-  );
+    );
+  }
 }
 
-function CatImage() {
-  return <img width='200' src='http://thecatapi.com/api/images/get?format=src&type=gif'/>
+function catImage(src, key) {
+  return <img width='200' src={src} key={key} />
 }
 
-function mapStateToProps(state) {
+// Runs on first load
+function mapStateToProps({counterData}) {
+  console.log('mapStateToProps: ', counterData);
   return {
-    catCount: state.catCount
+    catCount: counterData.catCount,
+    url: counterData.url
   };
 }
 
